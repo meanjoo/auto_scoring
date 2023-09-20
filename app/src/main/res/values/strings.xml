@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Auto Scoring Application</string>
+    <string name="txt_btn_upload">시험지 이미지</string>
+    <string name="txt_enter_answer">정답 입력</string>
+    <string name="txt_btn_camera">카메라로 사진 찍기</string>
+    <string name="txt_btn_image">이미지 파일 업로드</string>
+    <string name="txt_type_answer_title">답안 입력 페이지</string>
+</resources>

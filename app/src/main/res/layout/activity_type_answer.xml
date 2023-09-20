@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txt_type_answer_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_type_answer_title"
+        android:gravity="center"
+        android:textSize="30dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름: "
+        app:layout_constraintTop_toBottomOf="@id/txt_type_answer_title"
+        app:layout_constraintBottom_toBottomOf="@id/input_name"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="시험 이름을 입력하세요."
+        app:layout_constraintTop_toBottomOf="@id/txt_type_answer_title"
+        app:layout_constraintLeft_toRightOf="@id/txt_name"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="행: "
+        app:layout_constraintTop_toBottomOf="@id/input_name"
+        app:layout_constraintBottom_toBottomOf="@id/input_row"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:id="@+id/input_row"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="행 크기를 입력하세요."
+        app:layout_constraintTop_toBottomOf="@id/input_name"
+        app:layout_constraintLeft_toRightOf="@id/txt_row"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_col"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="열: "
+        app:layout_constraintTop_toBottomOf="@id/input_row"
+        app:layout_constraintBottom_toBottomOf="@id/input_col"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:id="@+id/input_col"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="열 크기를 입력하세요."
+        app:layout_constraintTop_toBottomOf="@id/input_row"
+        app:layout_constraintLeft_toRightOf="@id/txt_col"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_short_answer_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="문항 당 배점: "
+        app:layout_constraintTop_toBottomOf="@id/input_col"
+        app:layout_constraintBottom_toBottomOf="@id/input_points"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:id="@+id/input_points"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="단답식의 문항 당 배점을 입력하세요."
+        app:layout_constraintTop_toBottomOf="@id/input_col"
+        app:layout_constraintLeft_toRightOf="@id/txt_short_answer_points"
+        app:layout_constraintRight_toRightOf="parent"/>
+    
+    <Button
+        android:id="@+id/btn_make_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/input_points"
+        android:text="표 만들기"/>
+
+    <TextView
+        android:id="@+id/txt_essay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="서술형"
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@id/btn_make_table"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/input_essay"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/essay_border"
+        android:layout_margin="5dp"
+        app:layout_constraintTop_toBottomOf="@id/txt_essay"/>
+
+    <Button
+        android:id="@+id/btn_save_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="저장하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
