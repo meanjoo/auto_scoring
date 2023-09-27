@@ -23,7 +23,8 @@
         </activity>
 
         <activity android:name=".UploadActivity"></activity>
-        <activity android:name=".TypeAnswerActivity"></activity>
+        <activity android:name=".TypeAnswerActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>
