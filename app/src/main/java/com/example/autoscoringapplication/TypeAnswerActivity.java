@@ -44,7 +44,7 @@ public class TypeAnswerActivity extends AppCompatActivity {
                 row = Integer.parseInt(inputRow.getText().toString());
                 col = Integer.parseInt(inputCol.getText().toString());
 
-                for(int i=0; i<row; i++) {
+                for(int i=1; i<=row; i++) {
                     LinearLayout linearLayout2 = new LinearLayout(getApplicationContext()); // row linear layout
                     linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
                     linearLayout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -53,8 +53,9 @@ public class TypeAnswerActivity extends AppCompatActivity {
                         EditText editText = new EditText(getApplicationContext());
                         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
                         editTextParams.weight = 1;
-                        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                         editText.setLayoutParams(editTextParams);
+                        editText.setId(i+j*row);
+                        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                         editText.setBackgroundResource(R.drawable.edittext_border);
                         linearLayout2.addView(editText);
                     }
@@ -73,6 +74,11 @@ public class TypeAnswerActivity extends AppCompatActivity {
                 Log.d(TAG, "열 크기: " + inputCol.getText());
                 Log.d(TAG, "문항 당 배점: " + inputPoints.getText());
                 Log.d(TAG, "서술형: " + inputEssay.getText());
+
+                for(int i=1; i<=row*col; i++) {
+                    EditText editText = (EditText) findViewById(i);
+                    Log.d(TAG, "표 내용 " + Integer.toString(i) + " : " + editText.getText().toString());
+                }
             }
         });
     }
