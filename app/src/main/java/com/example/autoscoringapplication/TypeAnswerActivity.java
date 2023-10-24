@@ -12,11 +12,24 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.autoscoringapplication.api.MyAPI;
+import com.example.autoscoringapplication.data.Answer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class TypeAnswerActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
+
     private EditText inputName, inputRow, inputCol, inputPoints, inputEssay;
     private Button btnMakeTable, btnSaveAnswer;
     private LinearLayout linearLayout;
+    private MyAPI api;
 
     private int row, col;
 
@@ -25,6 +38,7 @@ public class TypeAnswerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_answer);
 
+        api = ApiClient.getRetrofit().create(MyAPI.class);
         inputName = (EditText) findViewById(R.id.input_name);
         inputRow = (EditText) findViewById(R.id.input_row);
         inputCol = (EditText) findViewById(R.id.input_col);
@@ -69,16 +83,42 @@ public class TypeAnswerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "저장하기 버튼 클릭");
 
-                Log.d(TAG, "시험 이름: " + inputName.getText());
-                Log.d(TAG, "행 크기: " + inputRow.getText());
-                Log.d(TAG, "열 크기: " + inputCol.getText());
-                Log.d(TAG, "문항 당 배점: " + inputPoints.getText());
-                Log.d(TAG, "서술형: " + inputEssay.getText());
+                Answer answer = new Answer();
 
+//                Log.d(TAG, "시험 이름: " + inputName.getText());
+//                Log.d(TAG, "행 크기: " + inputRow.getText());
+//                Log.d(TAG, "열 크기: " + inputCol.getText());
+//                Log.d(TAG, "문항 당 배점: " + inputPoints.getText());
+//                Log.d(TAG, "서술형: " + inputEssay.getText());
+
+                answer.setAnsName(inputName.getText().toString());
+                answer.setRowSize(Integer.parseInt(inputRow.getText().toString()));
+                answer.setColSize(Integer.parseInt(inputCol.getText().toString()));
+                answer.setScore(Integer.parseInt(inputPoints.getText().toString()));
+                answer.setSubAns(inputEssay.getText().toString());
+
+                List<String> objAns = new ArrayList<>();
                 for(int i=1; i<=row*col; i++) {
                     EditText editText = (EditText) findViewById(i);
-                    Log.d(TAG, "표 내용 " + Integer.toString(i) + " : " + editText.getText().toString());
+//                    Log.d(TAG, "표 내용 " + Integer.toString(i) + " : " + editText.getText().toString());
+                    objAns.add(editText.getText().toString());
                 }
+                answer.setObjAns(String.join(",", objAns));
+
+                api.postAnswer(answer).enqueue(new Callback<Answer>() {
+                    @Override
+                    public void onResponse(Call<Answer> call, Response<Answer> response) {
+                        if (response.isSuccessful()) { // http response code가 200일 때
+                            Log.d(TAG, "서버 전달 성공!");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Answer> call, Throwable t) {
+                        Log.d(TAG, "onFailure");
+                        t.printStackTrace();
+                    }
+                });
             }
         });
     }
