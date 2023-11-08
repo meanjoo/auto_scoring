@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!-- https://salmonpack.tistory.com/46 모루겠다ㅎㅎ
+    https://developer.android.com/about/versions/13/behavior-changes-13?hl=ko
+    READ_EXTERNAL_STORAGE 하면 미디어 권한을 앱에 자동으로 부여한다는 건가?
+    -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"

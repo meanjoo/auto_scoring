@@ -1,5 +1,13 @@
 package com.example.autoscoringapplication;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.graphics.Bitmap;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +24,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class UploadActivity extends AppCompatActivity {
+
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
+    private static final int CAMERA_REQUEST_CODE = 102;
+
+    private static final int GALLERY_PERMISSION_REQUEST_CODE = 101;
+    private boolean isGalleryPermissionGranted = false;
+
     private final String TAG = this.getClass().getSimpleName();
     private ImageView btnCamera, btnImage;
     private ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -33,9 +48,18 @@ public class UploadActivity extends AppCompatActivity {
                 }
             }
     );
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivity(cameraIntent);
+    }
+
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivity(galleryIntent);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
@@ -45,21 +69,38 @@ public class UploadActivity extends AppCompatActivity {
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 카메라로 촬영 가능하도록 https://developer.android.com/guide/components/intents-common?hl=ko
-                Log.d(TAG, "카메라로 사진 촬영 버튼");
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                launcher.launch(intent);
+                if(ContextCompat.checkSelfPermission(UploadActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(
+                            UploadActivity.this,
+                            new String[]{Manifest.permission.CAMERA},
+                            CAMERA_PERMISSION_REQUEST_CODE
+                    );
+                } else {
+                    openCamera();
+                }
             }
         });
 
+//        btnCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 카메라로 촬영 가능하도록 https://developer.android.com/guide/components/intents-common?hl=ko
+//                Log.d(TAG, "카메라로 사진 촬영 버튼");
+//                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                //launcher.launch(intent);
+//            }
+//        });
+
         btnImage.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 // 갤러리 진입 가능하도록
                 Log.d(TAG, "이미지 파일 업로드 버튼");
-                // 권환 획득?
+                // 권한 획득?
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 //                }
+
                 // https://cishome.tistory.com/243
                 Intent galleryIntent = new Intent();
                 galleryIntent.setType("image/*");

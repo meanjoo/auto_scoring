@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ResultActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
-    private int answerId;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         Intent intent = getIntent();
-        answerId = intent.getIntExtra("id", -1);
-        Log.d(TAG, "id: " + answerId);
+        id = intent.getStringExtra("id");
+        Log.d(TAG, "id: " + id);
     }
 }

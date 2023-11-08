@@ -13,8 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.autoscoringapplication.api.MyAPI;
-import com.example.autoscoringapplication.api.TestAPI;
-import com.example.autoscoringapplication.data.Album;
+import com.example.autoscoringapplication.data.Name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,46 +26,47 @@ public class SelectAnswerActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
     private final String hint = "채점할 답안지의 답안을 선택하세요.";
     private Spinner spinner;
-    private TestAPI testApi;
-    private List<Album> albums;
+    private MyAPI api;
     private Button btnSelectOk;
-    private int selectId;
+    private String selectId;
+    private List<Name> names;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_answer);
 
-        testApi = TestApiClient.getRetrofit().create(TestAPI.class);
+        api = ApiClient.getRetrofit().create(MyAPI.class);
         spinner = (Spinner) findViewById(R.id.spinner_answer);
         btnSelectOk = (Button) findViewById(R.id.btn_select_ok);
 
-        testApi.getAlbum().enqueue(new Callback<List<Album>>() {
+        api.getName().enqueue(new Callback<List<Name>>() {
             @Override
-            public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Call<List<Name>> call, Response<List<Name>> response) {
+                if(response.isSuccessful()){
                     Log.d(TAG, "success");
-                    albums = response.body();
-                    ArrayList<String> answerList = new ArrayList<>();
-                    answerList.add(hint); // hint
-                    for (Album a : albums) {
-//                        Log.d(TAG, a.getTitle());
-                        answerList.add(a.getTitle());
+                    names = response.body();
+                    ArrayList<String> nameList = new ArrayList<>();
+                    nameList.add(hint);
+                    for(Name a : names){
+                        nameList.add(a.getAnsName());
                     }
 
                     ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_spinner_dropdown_item,
-                            answerList);
+                            nameList);
                     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(spinnerAdapter);
 
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            if (!answerList.get(position).equals(hint)) {
-                                selectId = albums.get(position - 1).getId();
-                                Toast.makeText(getApplicationContext(), answerList.get(position)+"가 선택", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "id: " + albums.get(position - 1).getId() +", title: " + albums.get(position - 1).getTitle());
+                            if(!nameList.get(position).equals(hint)){
+                                selectId = names.get(position - 1).getId();
+                                Toast.makeText(getApplicationContext(), nameList.get(position)+"가 선택", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "id: " + names.get(position-1).getId() + "ansName: " + names.get(position - 1 ).getAnsName());
                             }
                         }
 
@@ -79,9 +79,8 @@ public class SelectAnswerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Album>> call, Throwable t) {
-                Log.d(TAG, "onFailure");
-                t.printStackTrace();
+            public void onFailure(Call<List<Name>> call, Throwable t) {
+
             }
         });
 
