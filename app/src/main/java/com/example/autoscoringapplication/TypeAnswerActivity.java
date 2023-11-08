@@ -39,14 +39,14 @@ public class TypeAnswerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_type_answer);
 
         api = ApiClient.getRetrofit().create(MyAPI.class);
-        inputName = (EditText) findViewById(R.id.input_name);
-        inputRow = (EditText) findViewById(R.id.input_row);
-        inputCol = (EditText) findViewById(R.id.input_col);
-        inputPoints = (EditText) findViewById(R.id.input_points);
-        inputEssay = (EditText) findViewById(R.id.input_essay);
-        btnMakeTable = (Button) findViewById(R.id.btn_make_table);
-        btnSaveAnswer = (Button) findViewById(R.id.btn_save_answer);
-        linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
+        inputName = findViewById(R.id.input_name);
+        inputRow = findViewById(R.id.input_row);
+        inputCol = findViewById(R.id.input_col);
+        inputPoints = findViewById(R.id.input_points);
+        inputEssay = findViewById(R.id.input_essay);
+        btnMakeTable = findViewById(R.id.btn_make_table);
+        btnSaveAnswer = findViewById(R.id.btn_save_answer);
+        linearLayout = findViewById(R.id.linear_layout);
 
         btnMakeTable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +110,7 @@ public class TypeAnswerActivity extends AppCompatActivity {
                     public void onResponse(Call<Answer> call, Response<Answer> response) {
                         if (response.isSuccessful()) { // http response code가 200일 때
                             Log.d(TAG, "서버 전달 성공!");
+                            finish();
                         }
                     }
 
