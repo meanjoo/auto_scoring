@@ -27,7 +27,7 @@ public class SelectAnswerActivity extends AppCompatActivity {
     private final String hint = "채점할 답안지의 답안을 선택하세요.";
     private Spinner spinner;
     private MyAPI api;
-    private Button btnSelectOk;
+    private Button btnSelectOk, btnAddAnswer;
     private String selectId;
     private List<Name> names;
 
@@ -40,6 +40,29 @@ public class SelectAnswerActivity extends AppCompatActivity {
         api = ApiClient.getRetrofit().create(MyAPI.class);
         spinner = (Spinner) findViewById(R.id.spinner_answer);
         btnSelectOk = (Button) findViewById(R.id.btn_select_ok);
+        btnAddAnswer = (Button) findViewById(R.id.btn_add_answer);
+        btnSelectOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectAnswerActivity.this, ResultActivity.class);
+                intent.putExtra("id", selectId);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        btnAddAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectAnswerActivity.this, TypeAnswerActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         api.getName().enqueue(new Callback<List<Name>>() {
             @Override
@@ -65,7 +88,7 @@ public class SelectAnswerActivity extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             if(!nameList.get(position).equals(hint)){
                                 selectId = names.get(position - 1).getId();
-                                Toast.makeText(getApplicationContext(), nameList.get(position)+"가 선택", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), nameList.get(position)+"가 선택", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "id: " + names.get(position-1).getId() + "ansName: " + names.get(position - 1 ).getAnsName());
                             }
                         }
@@ -81,16 +104,6 @@ public class SelectAnswerActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Name>> call, Throwable t) {
 
-            }
-        });
-
-        btnSelectOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectAnswerActivity.this, ResultActivity.class);
-                intent.putExtra("id", selectId);
-                startActivity(intent);
-                finish();
             }
         });
     }
